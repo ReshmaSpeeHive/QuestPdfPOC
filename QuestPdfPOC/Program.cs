@@ -21,6 +21,19 @@ try
 
             ;
     }
+    IContainer Heading1(IContainer container,string text)
+    {
+
+        return (IContainer)container
+         .Text(text)
+            .FontSize(50)
+            .ExtraBlack();
+         
+
+
+
+        
+    }
     IContainer RotatedCellStyle(IContainer container, string backgroundColor)
     {
         return container.Border(1)
@@ -33,7 +46,305 @@ try
             .AlignCenter()
             .AlignMiddle();
     }
+    void ComposeFooter(IContainer container)
+    {
+        container.Width(200).Image(geoPerformLogo);
+    }
+    void ComposeHeader(IContainer container)
+    {
+        container.Width(200).Image(exxonMobilLogo);
+    }
+    void ComposeTitle(IContainer container)
+    {
+        container.Width(200).Image(exxonMobilLogo);
+    }
+    void ComposeAtSeaWarrantyTable1(IContainer container)
+    {
+        var columnsCount =8;
 
+        container
+            .Table(table =>
+            {
+
+
+                table.ColumnsDefinition(columns =>
+                {
+                    for (var i = 0; i < columnsCount; i++)
+                    {
+                        columns.RelativeColumn();
+                    }
+                });
+                table.Header(header =>
+                {
+                    // please be sure to call the 'header' handler!
+                    header.Cell().RowSpan(3).Element(CellStyle).Text("Term Description");
+                    header.Cell().RowSpan(2).Element(CellStyle).Text("Min Day");
+                    header.Cell().RowSpan(2).Element(CellStyle).Text("Bad Day");
+                    header.Cell().RowSpan(2).Element(CellStyle).Text("Min Passage");
+                    header.Cell().ColumnSpan(4).Element(CellStyle).Text("Good Weather Evaluated Using:");
+                    header.Cell().Element(CellStyle).Text("Wind Speed");
+                    header.Cell().Element(CellStyle).Text("Wave Height");
+                    header.Cell().Element(CellStyle).Text("Current");
+                    header.Cell().RowSpan(2).Element(CellStyle).Text("Performance Speed");
+                    header.Cell().Element(CellStyle).Text("hrs");
+                    header.Cell().Element(CellStyle).Text("hrs");
+                    header.Cell().Element(CellStyle).Text("hrs");
+                    header.Cell().Element(CellStyle).Text("BF");
+                    header.Cell().Element(CellStyle).Text("M");
+                    header.Cell().Element(CellStyle).Text("kts");
+
+                    // you can extend existing styles by creating additional methods
+                    IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
+
+                });
+
+                for (var i = 0; i <= 7; i++)
+                {
+                    table.Cell().Element(CellStyle).Text("0.2");
+
+
+
+                    IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.White).ShowOnce();
+                }
+
+
+
+            });
+    }
+    void ComposeAtSeaWarrantyTable2(IContainer container)
+    {
+        var columnsCount = 6;
+
+        container.AlignLeft()
+
+
+            .Table(table =>
+            {
+
+
+                table.ColumnsDefinition(columns =>
+                {
+                    for (var i = 0; i < columnsCount; i++)
+                    {
+                        columns.RelativeColumn();
+                    }
+                });
+                table.Header(header =>
+                {
+                    // please be sure to call the 'header' handler!
+                    header.Cell().RowSpan(2).Element(CellStyle).Text("Warranted Description");
+                    header.Cell().RowSpan(2).Element(CellStyle).Text("Load Condition");
+                    header.Cell().Element(CellStyle).Text("Ordered Speed");
+                    header.Cell().ColumnSpan(2).Element(CellStyle).Text("About Clause");
+
+                    header.Cell().RowSpan(2).Element(CellStyle).Text("Warranted Fuel mt");
+
+                    header.Cell().Element(CellStyle).Text("kts");
+                    header.Cell().Element(CellStyle).Text("Speed kts(+/-)");
+                    header.Cell().Element(CellStyle).Text("Fuel%(+/-)");
+
+
+                    
+
+                    // you can extend existing styles by creating additional methods
+                    IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
+
+                });
+
+                for (var i = 0; i <= 14; i++)
+                {
+                    table.Cell().Element(CellStyle).Text("0.2");
+
+
+
+                    IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.White).ShowOnce();
+                }
+
+
+
+            });
+    }
+    void ComposeInPortWarrantyTable(IContainer container)
+    {
+        var columnsCount = 3;
+
+        container.AlignLeft()
+
+
+            .Table(table =>
+            {
+
+
+                table.ColumnsDefinition(columns =>
+                {
+                    for (var i = 0; i < columnsCount; i++)
+                    {
+                        columns.RelativeColumn();
+                    }
+                });
+                table.Header(header =>
+                {
+                    // please be sure to call the 'header' handler!
+                    header.Cell().RowSpan(2).Element(CellStyle).Text("Operation");
+                 
+                    
+                    header.Cell().ColumnSpan(2).Element(CellStyle).Text("Warranted");
+
+              
+                    header.Cell().Element(CellStyle).Text("FO(mt/day)");
+                    header.Cell().Element(CellStyle).Text("GO(mt/day)");
+
+
+
+
+                    // you can extend existing styles by creating additional methods
+                    IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
+
+                });
+
+                for (var i = 0; i <= 14; i++)
+                {
+                    table.Cell().Element(CellStyle).Text("0.2");
+
+
+
+                    IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.White).ShowOnce();
+                }
+
+
+
+            });
+    }
+    void ComposePumpingWarrantyTable(IContainer container)
+    {
+        var columnsCount = 3;
+
+        container
+            .Table(table =>
+            {
+
+
+                table.ColumnsDefinition(columns =>
+                {
+                    for (var i = 0; i < columnsCount; i++)
+                    {
+                        columns.RelativeColumn();
+                    }
+                });
+                table.Header(header =>
+                {
+                    // please be sure to call the 'header' handler!
+                    header.Cell().Element(CellStyle).Text("Descriptions");
+                    header.Cell().Element(CellStyle).Text("Warranties");
+                    header.Cell().Element(CellStyle).Text("Units");
+                   
+                  
+
+                    // you can extend existing styles by creating additional methods
+                    IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
+
+                });
+
+                for (var i = 0; i <= 14; i++)
+                {
+                    table.Cell().Element(CellStyle).Text("0.2");
+
+
+
+                    IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.White).ShowOnce();
+                }
+
+               
+
+            });
+    }
+    void ComposeTankDescriptionTable(IContainer container)
+    {
+        var columnsCount = 2;
+
+        container
+            .Table(table =>
+            {
+
+
+                table.ColumnsDefinition(columns =>
+                {
+                    for (var i = 0; i < columnsCount; i++)
+                    {
+                        columns.RelativeColumn();
+                    }
+                });
+                table.Header(header =>
+                {
+                    // please be sure to call the 'header' handler!
+                    header.Cell().Element(CellStyle).Text("Tank Descriptions");
+                    header.Cell().Element(CellStyle).Text("Number of Tanks");
+            
+
+
+
+                    // you can extend existing styles by creating additional methods
+                    IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
+
+                });
+
+                for (var i = 0; i <= 1; i++)
+                {
+                    table.Cell().Element(CellStyle).Text("0.2");
+
+
+
+                    IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.White).ShowOnce();
+                }
+
+
+
+            });
+    }
+    // Cargo Heating Warranties and tank cleaning have same table structure so reuse this function 
+    void ComposeOperationWarrantyTable(IContainer container)
+    {
+        var columnsCount = 3;
+
+        container
+            .Table(table =>
+            {
+
+
+                table.ColumnsDefinition(columns =>
+                {
+                    for (var i = 0; i < columnsCount; i++)
+                    {
+                        columns.RelativeColumn();
+                    }
+                });
+                table.Header(header =>
+                {
+                    // please be sure to call the 'header' handler!
+                    header.Cell().Element(CellStyle).Text("Category");
+                    header.Cell().Element(CellStyle).Text("Warranted Cons. (mt/day) (IFO)");
+                    header.Cell().Element(CellStyle).Text("Warranted Cons. (mt/day) (LSMGO)");
+
+
+
+                    // you can extend existing styles by creating additional methods
+                    IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
+
+                });
+
+                for (var i = 0; i <= 5; i++)
+                {
+                    table.Cell().Element(CellStyle).Text("0.2");
+
+
+
+                    IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.White).ShowOnce();
+                }
+
+
+
+            });
+    }
     void ComposePerformanceAnalysisSummaryTable(IContainer container)
     {
         var columnsCount = 9;
@@ -152,7 +463,11 @@ try
     }
     void ComposeHeading(IContainer container)
     {
-        container.Text("AT SEA PERFORMANCE DETAILS");
+        container.Text("AT SEA PERFORMANCE DETAILS").FontSize(18).Underline()
+                             .ExtraBlack();
+        container.Text("Passage Details:").FontSize(10).Underline()
+                           .ExtraBlack();
+        container.Text("Passage details of Daily Weather Condition and Fuel Consumption to warrants displayed below:");
     }
     void ComposeTable(IContainer container)
     {
@@ -545,8 +860,123 @@ try
 
         });
     }
+
     Document.Create(document =>
     {
+        
+        document.Page(titlePage =>
+        {
+            titlePage.Size(PageSizes.A3.Landscape());
+            titlePage.Margin(30);
+            titlePage.Header().Column(column =>
+            {
+                column.Item().Width(200).Image(exxonMobilLogo);
+
+            });
+            titlePage.Content().Column(column =>
+            {
+                column.Item().Text("Voyage TC Performance Analysis Report")
+                
+                             .FontSize(35)
+                             
+                             .ExtraBlack();
+                
+                column.Item().Text("Prepared For:")
+                            ;
+                column.Item().Text("Exxon Mobil")
+                  .FontSize(25)
+                             .ExtraBlack(); ;
+                column.Item().Text("Prepared By:");
+                column.Item().Text("Geoserve VPS")
+                  .FontSize(25)
+                             .ExtraBlack(); ;
+                column.Item().Text("Vessel Name");
+                column.Item().Text("xxxxxxx")
+                  .FontSize(25)
+                             .ExtraBlack(); ;
+                column.Item().Text("Voyage Nos:");
+                column.Item().Text("xxxxxxx");
+               // IContainer TextStyle(IContainer container) => Heading1(container, text);
+            });
+        });
+        document.Page(warrantyPage =>
+        {
+            warrantyPage.Size(PageSizes.A3.Landscape());
+            warrantyPage.Margin(30);
+            warrantyPage.Header().Column(column =>
+            {
+                column.Item().Width(200).Image(exxonMobilLogo);
+
+            });
+            warrantyPage.Content().Column(column => {
+                //column.Item().Element(ComposeHeading);
+                column.Item().Text("Time Charter Party Terms Warrants").FontSize(25)
+                             .ExtraBlack();
+                column.Item().Text("At Sea Warranties:").FontSize(18)
+                             .ExtraBlack();
+                column.Item().Element(ComposeAtSeaWarrantyTable1);
+                column.Item().Element(ComposeAtSeaWarrantyTable2);
+                column.Item().Text("In Port Warranties:").FontSize(18)
+                             .ExtraBlack();
+                column.Item().Element(ComposeInPortWarrantyTable);
+               
+                IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
+            });
+            warrantyPage.Footer().Column(column =>
+            {
+                column.Item().Width(300).Image(geoPerformLogo);
+                column.Item().AlignCenter().Text(text =>
+                {
+                    text.DefaultTextStyle(x => x.FontSize(16));
+
+                    text.CurrentPageNumber();
+                    text.Span(" / ");
+                    text.TotalPages();
+                });
+
+            });
+        });
+
+        document.Page(warrantyPage =>
+        {
+            warrantyPage.Size(PageSizes.A3.Landscape());
+            warrantyPage.Margin(30);
+            warrantyPage.Header().Column(column =>
+            {
+                column.Item().Width(200).Image(exxonMobilLogo);
+
+            });
+            warrantyPage.Content().Column(column => {
+                //column.Item().Element(ComposeHeading);
+                column.Item().Text("Time Charter Party Terms Warrants").FontSize(25)
+                             .ExtraBlack();
+                column.Item().Text("Pumping Warranties:").FontSize(25)
+                             .ExtraBlack();
+                column.Item().Element(ComposePumpingWarrantyTable);
+                column.Item().Element(ComposeTankDescriptionTable);
+                column.Item().Text("Cargo Heating Warranties:").FontSize(25)
+                             .ExtraBlack();
+                column.Item().Element(ComposeOperationWarrantyTable);
+                column.Item().Text("Tank CleaningWarranties:").FontSize(25)
+                             .ExtraBlack();
+                column.Item().Element(ComposeOperationWarrantyTable);
+                IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
+            });
+            warrantyPage.Footer().Column(column =>
+            {
+                column.Item().Width(300).Image(geoPerformLogo);
+                column.Item().AlignCenter().Text(text =>
+                {
+                    text.DefaultTextStyle(x => x.FontSize(16));
+
+                    text.CurrentPageNumber();
+                    text.Span(" / ");
+                    text.TotalPages();
+                });
+
+            });
+        });
+
         document.Page(performanceSummaryPage =>
         {
            performanceSummaryPage.Size(PageSizes.A3.Landscape());
@@ -558,9 +988,11 @@ try
             });
             performanceSummaryPage.Content().Column(column => {
                 //column.Item().Element(ComposeHeading);
-                column.Item().Element(CellStyle).Text("Voyage TC Performance Analysis Summary");
+                column.Item().Element(CellStyle).Text("Voyage TC Performance Analysis Summary").FontSize(25)
+                             .ExtraBlack();
                 column.Item().Element(ComposePerformanceAnalysisSummaryTable);
-                column.Item().Element(CellStyle).Text("Voyage TC Performance Analysis Detail");
+                column.Item().Element(CellStyle).Text("Voyage TC Performance Analysis Detail").FontSize(25)
+                             .ExtraBlack();
                 column.Item().Element(ComposePerformanceAnalysisDetailTable);
                 IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
             });
@@ -610,7 +1042,8 @@ try
             });
             portPerformancePage.Content().Column(column => {
                 //column.Item().Element(ComposeHeading);
-                column.Item().Text("Port Performance Detail");
+                column.Item().Text("Port Performance Detail").FontSize(25)
+                             .ExtraBlack();
                 column.Item().Element(ComposePortPerformanceTable);
                 column.Item().Element(ComposePortPerformanceTable);
                 IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
@@ -627,12 +1060,14 @@ try
             });
             pumpingPage.Content().Column(column => {
                 //column.Item().Element(ComposeHeading);
-                column.Item().Text("Pumping Performance");
+                column.Item().Text("Pumping Performance").FontSize(25)
+                             .ExtraBlack();
                 column.Item().Element(ComposePumpingTable1);
                 column.Item().Element(ComposePumpingTable2);
                 column.Item().Element(ComposePumpingTable3);
                 IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
             });
+            pumpingPage.Footer().Element(ComposeFooter);
         });
         document.Page(heatingPage => {
 
@@ -645,7 +1080,8 @@ try
             });
             heatingPage.Content().Column(column => {
                 //column.Item().Element(ComposeHeading);
-                column.Item().Text("Heating Performance");
+                column.Item().Text("Heating Performance").FontSize(25)
+                             .ExtraBlack();
                 column.Item().Element(ComposeHeatingTable1);
                 column.Item().Element(ComposeHeatingTable2);
                
@@ -664,7 +1100,8 @@ try
             });
             heatingPage.Content().Column(column => {
                 //column.Item().Element(ComposeHeading);
-                column.Item().Text("Tank Cleaning Performance");
+                column.Item().Text("Tank Cleaning Performance").FontSize(25)
+                             .ExtraBlack();
                 column.Item().Element(ComposeHeatingTable1);
                 column.Item().Element(ComposeHeatingTable2);
 
