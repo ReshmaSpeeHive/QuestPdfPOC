@@ -48,7 +48,20 @@ try
     }
     void ComposeFooter(IContainer container)
     {
-        container.Width(200).Image(geoPerformLogo);
+        container.Column(column =>
+         {
+             column.Item().Width(150).Image(geoPerformLogo);
+             column.Item().AlignCenter().Text(text =>
+             {
+                 text.DefaultTextStyle(x => x.FontSize(16));
+
+                 text.CurrentPageNumber();
+                 text.Span(" / ");
+                 text.TotalPages();
+             });
+
+         });
+       
     }
     void ComposeHeader(IContainer container)
     {
@@ -463,11 +476,15 @@ try
     }
     void ComposeHeading(IContainer container)
     {
-        container.Text("AT SEA PERFORMANCE DETAILS").FontSize(18).Underline()
+        container.Column(column =>
+        {
+            column.Item().Text("AT SEA PERFORMANCE DETAILS").FontSize(18).Underline()
                              .ExtraBlack();
-        container.Text("Passage Details:").FontSize(10).Underline()
+            column.Item().Text("Passage Details:").FontSize(10).Underline()
                            .ExtraBlack();
-        container.Text("Passage details of Daily Weather Condition and Fuel Consumption to warrants displayed below:");
+            column.Item().Text("Passage details of Daily Weather Condition and Fuel Consumption to warrants displayed below:");
+        });
+       
     }
     void ComposeTable(IContainer container)
     {
@@ -860,7 +877,54 @@ try
 
         });
     }
+    void ComposeTankCleaningPerformance(IContainer container)
+    {
+        var columnsCount = 10;
 
+        container
+            .Table(table =>
+            {
+
+
+                table.ColumnsDefinition(columns =>
+                {
+                    for (var i = 0; i < columnsCount; i++)
+                    {
+                        columns.RelativeColumn();
+                    }
+                });
+                table.Header(header =>
+                {
+                    // please be sure to call the 'header' handler!
+                    header.Cell().ColumnSpan(10).Element(CellStyle).Text("Voyage 01");
+                    header.Cell().Element(CellStyle).Text("Operation");
+                    header.Cell().Element(CellStyle).Text("Date");
+                    header.Cell().Element(CellStyle).Text("Hours of Tank Cleaned");
+                    header.Cell().Element(CellStyle).Text("Number of Tanks Cleaned");
+                    header.Cell().Element(CellStyle).Text("Actual Cons FO (mt)");
+                    header.Cell().Element(CellStyle).Text("Actual Cons DO (mt)");
+                    header.Cell().Element(CellStyle).Text("Warranted FO consumption (mt)");
+                    header.Cell().Element(CellStyle).Text("Warranted DO consumption (mt)");
+
+                    header.Cell().Element(CellStyle).Text("Fuel Loss/Gain FO(mt)");
+                    header.Cell().Element(CellStyle).Text("Fuel  Loss/Gain DO(mt)");
+                    // you can extend existing styles by creating additional methods
+                    IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
+
+                });
+                for (var i = 0; i <= 59; i++)
+                {
+                    table.Cell().Element(CellStyle).Text("0.2");
+
+
+
+                    IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.White).ShowOnce();
+                }
+
+
+
+            });
+    }
     Document.Create(document =>
     {
         
@@ -868,11 +932,7 @@ try
         {
             titlePage.Size(PageSizes.A3.Landscape());
             titlePage.Margin(30);
-            titlePage.Header().Column(column =>
-            {
-                column.Item().Width(200).Image(exxonMobilLogo);
-
-            });
+            titlePage.Header().Element(ComposeHeader);
             titlePage.Content().Column(column =>
             {
                 column.Item().Text("Voyage TC Performance Analysis Report")
@@ -898,16 +958,13 @@ try
                 column.Item().Text("xxxxxxx");
                // IContainer TextStyle(IContainer container) => Heading1(container, text);
             });
+            titlePage.Footer().Element(ComposeFooter);
         });
         document.Page(warrantyPage =>
         {
             warrantyPage.Size(PageSizes.A3.Landscape());
             warrantyPage.Margin(30);
-            warrantyPage.Header().Column(column =>
-            {
-                column.Item().Width(200).Image(exxonMobilLogo);
-
-            });
+            warrantyPage.Header().Element(ComposeHeader);
             warrantyPage.Content().Column(column => {
                 //column.Item().Element(ComposeHeading);
                 column.Item().Text("Time Charter Party Terms Warrants").FontSize(25)
@@ -922,30 +979,14 @@ try
                
                 IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
             });
-            warrantyPage.Footer().Column(column =>
-            {
-                column.Item().Width(300).Image(geoPerformLogo);
-                column.Item().AlignCenter().Text(text =>
-                {
-                    text.DefaultTextStyle(x => x.FontSize(16));
-
-                    text.CurrentPageNumber();
-                    text.Span(" / ");
-                    text.TotalPages();
-                });
-
-            });
+            warrantyPage.Footer().Element(ComposeFooter) ;
         });
 
         document.Page(warrantyPage =>
         {
             warrantyPage.Size(PageSizes.A3.Landscape());
             warrantyPage.Margin(30);
-            warrantyPage.Header().Column(column =>
-            {
-                column.Item().Width(200).Image(exxonMobilLogo);
-
-            });
+            warrantyPage.Header().Element(ComposeHeader);
             warrantyPage.Content().Column(column => {
                 //column.Item().Element(ComposeHeading);
                 column.Item().Text("Time Charter Party Terms Warrants").FontSize(25)
@@ -962,30 +1003,27 @@ try
                 column.Item().Element(ComposeOperationWarrantyTable);
                 IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
             });
-            warrantyPage.Footer().Column(column =>
-            {
-                column.Item().Width(300).Image(geoPerformLogo);
-                column.Item().AlignCenter().Text(text =>
-                {
-                    text.DefaultTextStyle(x => x.FontSize(16));
+            //warrantyPage.Footer().Column(column =>
+            //{
+            //    column.Item().Width(300).Image(geoPerformLogo);
+            //    column.Item().AlignCenter().Text(text =>
+            //    {
+            //        text.DefaultTextStyle(x => x.FontSize(16));
 
-                    text.CurrentPageNumber();
-                    text.Span(" / ");
-                    text.TotalPages();
-                });
+            //        text.CurrentPageNumber();
+            //        text.Span(" / ");
+            //        text.TotalPages();
+            //    });
 
-            });
+            //});
+            warrantyPage.Footer().Element(ComposeFooter);
         });
 
         document.Page(performanceSummaryPage =>
         {
            performanceSummaryPage.Size(PageSizes.A3.Landscape());
            performanceSummaryPage.Margin(30);
-            performanceSummaryPage.Header().Column(column =>
-            {
-                column.Item().Width(200).Image(exxonMobilLogo);
-                
-            });
+            performanceSummaryPage.Header().Element(ComposeHeader);
             performanceSummaryPage.Content().Column(column => {
                 //column.Item().Element(ComposeHeading);
                 column.Item().Element(CellStyle).Text("Voyage TC Performance Analysis Summary").FontSize(25)
@@ -996,6 +1034,7 @@ try
                 column.Item().Element(ComposePerformanceAnalysisDetailTable);
                 IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
             });
+            performanceSummaryPage.Footer().Element(ComposeFooter);
         });
         
         for (int pageIndex = 1; pageIndex <= 3; pageIndex++)
@@ -1015,31 +1054,15 @@ try
                 column.Item().Element(ComposeHeading);
                 column.Item().Element(ComposeTable);
                 
-            });              
-                page.Footer().Column(column =>
-                {
-                    column.Item().Width(300).Image(geoPerformLogo);
-                    column.Item().AlignCenter().Text(text =>
-                    {
-                        text.DefaultTextStyle(x => x.FontSize(16));
-
-                        text.CurrentPageNumber();
-                        text.Span(" / ");
-                        text.TotalPages();
-                    });
-
-                });
+            });
+                page.Footer().Element(ComposeFooter);
             });
         }
         document.Page(portPerformancePage =>
         {
             portPerformancePage.Size(PageSizes.A3.Landscape());
             portPerformancePage.Margin(30);
-            portPerformancePage.Header().Column(column =>
-            {
-                column.Item().Width(200).Image(exxonMobilLogo);
-
-            });
+            portPerformancePage.Header().Element(ComposeHeader);
             portPerformancePage.Content().Column(column => {
                 //column.Item().Element(ComposeHeading);
                 column.Item().Text("Port Performance Detail").FontSize(25)
@@ -1048,16 +1071,13 @@ try
                 column.Item().Element(ComposePortPerformanceTable);
                 IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
             });
+            portPerformancePage.Footer().Element(ComposeFooter);
         });
         document.Page(pumpingPage => {
 
             pumpingPage.Size(PageSizes.A3.Landscape());
             pumpingPage.Margin(30);
-            pumpingPage.Header().Column(column =>
-            {
-                column.Item().Width(200).Image(exxonMobilLogo);
-
-            });
+            pumpingPage.Header().Element(ComposeHeader);
             pumpingPage.Content().Column(column => {
                 //column.Item().Element(ComposeHeading);
                 column.Item().Text("Pumping Performance").FontSize(25)
@@ -1073,11 +1093,7 @@ try
 
             heatingPage.Size(PageSizes.A3.Landscape());
             heatingPage.Margin(30);
-            heatingPage.Header().Column(column =>
-            {
-                column.Item().Width(200).Image(exxonMobilLogo);
-
-            });
+            heatingPage.Header().Element(ComposeHeader);
             heatingPage.Content().Column(column => {
                 //column.Item().Element(ComposeHeading);
                 column.Item().Text("Heating Performance").FontSize(25)
@@ -1087,18 +1103,19 @@ try
                
                 IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
             });
+            heatingPage.Footer().Element(ComposeFooter);
         });
         //change below to Tank Cleaning
-        document.Page(heatingPage => {
+        document.Page(tankCleaningPage => {
 
-            heatingPage.Size(PageSizes.A3.Landscape());
-            heatingPage.Margin(30);
-            heatingPage.Header().Column(column =>
+            tankCleaningPage.Size(PageSizes.A3.Landscape());
+            tankCleaningPage.Margin(30);
+            tankCleaningPage.Header().Column(column =>
             {
                 column.Item().Width(200).Image(exxonMobilLogo);
 
             });
-            heatingPage.Content().Column(column => {
+            tankCleaningPage.Content().Column(column => {
                 //column.Item().Element(ComposeHeading);
                 column.Item().Text("Tank Cleaning Performance").FontSize(25)
                              .ExtraBlack();
@@ -1107,6 +1124,7 @@ try
 
                 IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
             });
+            tankCleaningPage.Footer().Element(ComposeFooter);
         });
     })
     .GeneratePdf("Test2.pdf");
