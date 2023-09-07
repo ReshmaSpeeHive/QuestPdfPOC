@@ -19,6 +19,7 @@ namespace QuestPdfPOC.Model
 
         public string CargoGradeName { get; set; }
         public string CargoType { get; set; }
+        public string DischargePort { get; set; }
         public List<PumpingReportedData> ReportedData { get; set; }
         public PumpingSingleVoyagePerformance SingleVoyagePerformance { get; set; }
 

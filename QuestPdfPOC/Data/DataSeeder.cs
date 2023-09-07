@@ -176,6 +176,83 @@ namespace QuestPdfPOC.Data
                 TotalLossGainGO = Math.Round(random.NextDouble(), 2)
             };
         }
+
+        public PumpingPerformanceData SeedPumpingPerformanceData()
+        {
+            var performanceData = new PumpingPerformanceData
+            {
+                SingleVoyageData = SeedPumpingSingleVoyageData()
+            };
+
+            return performanceData;
+        }
+
+        private List<PumpingSingleVoyageData> SeedPumpingSingleVoyageData()
+        {
+            var singleVoyageDataList = new List<PumpingSingleVoyageData>();
+
+            for (int i = 0; i < 5; i++)
+            {
+                var singleVoyageData = new PumpingSingleVoyageData
+                {
+                    Title = "Voyage " + (i + 1),
+                    CargoGradeName = "Grade " + (i + 1),
+                    CargoType = "Type " + (i + 1),
+                    ReportedData = SeedPumpingReportedData(),
+                    SingleVoyagePerformance = SeedPumpingSingleVoyagePerformance()
+                };
+
+                singleVoyageDataList.Add(singleVoyageData);
+            }
+
+            return singleVoyageDataList;
+        }
+
+        private List<PumpingReportedData> SeedPumpingReportedData()
+        {
+            var reportedDataList = new List<PumpingReportedData>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                var reportedData = new PumpingReportedData
+                {
+                    VoyageNo =  1,
+                    TotalCargoVolume = random.Next(1000, 10000),
+                    Activity = "Activity " + (i + 1),
+                    ActivityStartTime = DateTime.Now.AddHours(-i).ToString(),
+                    ActivityEndTime = DateTime.Now.AddHours(-i + 1).ToString(),
+                    ActivityActualTime = DateTime.Now.AddHours(-i + 2).ToString(),
+                    Manifold = Math.Round(random.NextDouble(), 2),
+                    TotalManifold = Math.Round(random.NextDouble(), 2),
+                    CagoPumped = Math.Round(random.NextDouble(), 2),
+                    MaxRate = Math.Round(random.NextDouble(), 2),
+                    COWHours = Math.Round(random.NextDouble(), 2),
+                    PressureAdjustment = Math.Round(random.NextDouble(), 2),
+                    ManifoldAdj = Math.Round(random.NextDouble(), 2),
+                    RateAdjustment = Math.Round(random.NextDouble(), 2),
+                    ActivityCPTime = Math.Round(random.NextDouble(), 2),
+                    AdjustedCPTime = Math.Round(random.NextDouble(), 2),
+                    PSIWeighting = Math.Round(random.NextDouble(), 2),
+                    WeightedAverage = Math.Round(random.NextDouble(), 2)
+                };
+
+                reportedDataList.Add(reportedData);
+            }
+
+            return reportedDataList;
+        }
+
+        private PumpingSingleVoyagePerformance SeedPumpingSingleVoyagePerformance()
+        {
+            return new PumpingSingleVoyagePerformance
+            {
+                StartOfOperation = DateTime.Now.AddHours(-5),
+                EndOfOperation = DateTime.Now,
+                ActualTimeTaken = Math.Round(random.NextDouble() * 10, 2),
+                CPTime = Math.Round(random.NextDouble() * 10, 2),
+                TimeLossGain = (random.Next(2) == 0) ? "Loss" : "Gain"
+            };
+        }
     }
 
 }

@@ -665,7 +665,7 @@ try
 
             });
     }
-    void ComposePumpingTable1(IContainer container)
+    void ComposePumpingVoyageDetail(IContainer container, PumpingSingleVoyageData singleVoyageData)
     {
         var columnsCount = 4;
 
@@ -685,14 +685,14 @@ try
                 {
                     // please be sure to call the 'header' handler!
                     header.Cell().ColumnSpan(4).Element(CellStyle).Text("Voyage 01");
-                    header.Cell().Element(CellStyle).Text("Discharge Port");
+                    header.Cell().Element(CellStyle).Text(singleVoyageData.DischargePort);
                     header.Cell().ColumnSpan(3).Element(CellStyle).Text("DAESAN");
                     header.Cell().Element(CellStyle).Text("Cargo Grade Name");
-                    header.Cell().Element(CellStyle).Text(" ");
+                    header.Cell().Element(CellStyle).Text(singleVoyageData.CargoGradeName);
                     header.Cell().Element(CellStyle).Text("Cargo Type");
-                    header.Cell().Element(CellStyle).Text(" ");             
+                    header.Cell().Element(CellStyle).Text(singleVoyageData.CargoType);             
 
-                    // you can extend existing styles by creating additional methods
+                   
                     IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
 
                 });
@@ -701,7 +701,7 @@ try
                
             });
     }
-    void ComposePumpingTable2(IContainer container)
+    void ComposePumpingSingleVoyageData(IContainer container, PumpingSingleVoyageData singleVoyageData)
     {
         var columnsCount = 11;
 
@@ -735,11 +735,19 @@ try
                     IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
 
                 });
-                for (var i = 0; i <= 65; i++)
+                foreach (var reportedData in singleVoyageData.ReportedData)
                 {
-                    table.Cell().Element(CellStyle).Text("0.2");
-
-
+                    table.Cell().Element(CellStyle).Text(reportedData.VoyageNo.ToString());
+                    table.Cell().Element(CellStyle).Text(reportedData.TotalCargoVolume.ToString());
+                    table.Cell().Element(CellStyle).Text(reportedData.Activity ?? "");
+                    table.Cell().Element(CellStyle).Text(reportedData.ActivityStartTime ?? "");
+                    table.Cell().Element(CellStyle).Text(reportedData.ActivityEndTime ?? "");
+                    table.Cell().Element(CellStyle).Text(reportedData.ActivityActualTime ?? "");
+                    table.Cell().Element(CellStyle).Text(reportedData.PressureAdjustment.ToString());
+                    table.Cell().Element(CellStyle).Text(reportedData.CagoPumped.ToString());
+                    table.Cell().Element(CellStyle).Text(reportedData.COWHours.ToString());
+                    table.Cell().Element(CellStyle).Text(reportedData.AdjustedCPTime.ToString());
+                    table.Cell().Element(CellStyle).Text(reportedData.WeightedAverage.ToString());
 
                     IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.White).ShowOnce();
                 }
@@ -748,7 +756,7 @@ try
 
             });
     }
-    void ComposePumpingTable3(IContainer container)
+    void ComposePumpingSingleVoyagePerformance(IContainer container, PumpingSingleVoyageData singleVoyageData)
     {
         var columnsCount = 8;
 
@@ -780,106 +788,21 @@ try
                     IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
 
                 });
-                for (var i = 0; i <= 7; i++)
-                {
-                    table.Cell().Element(CellStyle).Text("0.2");
+                table.Cell().Element(CellStyle).Text(singleVoyageData.Title+": Pumping Performance");
+                table.Cell().Element(CellStyle).Text(singleVoyageData.SingleVoyagePerformance.StartOfOperation);
+                table.Cell().Element(CellStyle).Text(singleVoyageData.SingleVoyagePerformance.EndOfOperation);
 
 
-
-                    IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.White).ShowOnce();
-                }
-
-
-            });
-    }
-    void ComposeHeatingTable1(IContainer container)
-    {
-        var columnsCount = 10;
-
-        container
-            .Table(table =>
-            {
-
-
-                table.ColumnsDefinition(columns =>
-                {
-                    for (var i = 0; i < columnsCount; i++)
-                    {
-                        columns.RelativeColumn();
-                    }
-                });
-                table.Header(header =>
-                {
-                    // please be sure to call the 'header' handler!
-                    header.Cell().ColumnSpan(10).Element(CellStyle).Text("Voyage 01");
-                    header.Cell().Element(CellStyle).Text("Operation");
-                    header.Cell().Element(CellStyle).Text("Date");
-                    header.Cell().Element(CellStyle).Text("Hours of Cargo Heating");
-                    header.Cell().Element(CellStyle).Text("Number of Tanks Heated");
-                    header.Cell().Element(CellStyle).Text("Actual Cons FO (mt)");
-                    header.Cell().Element(CellStyle).Text("Actual Cons DO (mt)");
-                    header.Cell().Element(CellStyle).Text("Warranted FO consumption (mt)");
-                    header.Cell().Element(CellStyle).Text("Warranted DO consumption (mt)");
-
-                    header.Cell().Element(CellStyle).Text("Fuel Loss/Gain FO(mt)");
-                    header.Cell().Element(CellStyle).Text("Fuel  Loss/Gain DO(mt)");
-                    // you can extend existing styles by creating additional methods
-                    IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
-
-                });
-                for (var i = 0; i <= 59; i++)
-                {
-                    table.Cell().Element(CellStyle).Text("0.2");
-
-
-
-                    IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.White).ShowOnce();
-                }
-
-
-
-            });
-    }
-    void ComposeHeatingTable2(IContainer container)
-    {
-        var columnsCount = 5;
-        container.Table(table =>
-        {
-
-
-            table.ColumnsDefinition(columns =>
-            {
-                for (var i = 0; i < columnsCount; i++)
-                {
-                    columns.RelativeColumn();
-                }
-            });
-            table.Header(header =>
-            {
-                // please be sure to call the 'header' handler!
-                header.Cell().RowSpan(2).Element(CellStyle).Text("Heating performance Voyage 01");
-                header.Cell().Element(CellStyle).Text("Warranted Consumption FO(mt)");
-                header.Cell().Element(CellStyle).Text("Warranted Consumption FO(mt)");
-                header.Cell().Element(CellStyle).Text("Time Loss/Gain FO(mt)");
-                header.Cell().Element(CellStyle).Text("Time Loss/Gain FO(mt)");
-                
-                // you can extend existing styles by creating additional methods
-                IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
-
-            });
-            for (var i = 0; i <= 3; i++)
-            {
-                table.Cell().Element(CellStyle).Text("0.2");
-
-
-
+                table.Cell().Element(CellStyle).Text(singleVoyageData.SingleVoyagePerformance.ActualTimeTaken);
+                table.Cell().Element(CellStyle).Text(singleVoyageData.SingleVoyagePerformance.CPTime);
+                table.Cell().Element(CellStyle).Text(singleVoyageData.SingleVoyagePerformance.TimeLossGain);
                 IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.White).ShowOnce();
-            }
+              
 
 
-
-        });
+            });
     }
+  
     void ComposeCargoHeatingSingleVoyageData(IContainer container, CargoHeatingSingleVoyageData singleVoyageData)
     {
         var columnsCount = 10;
@@ -1030,16 +953,16 @@ try
 
                    // table.Cell().Element(CellStyle).Text(singleVoyageData.Title);
              
-                    table.Cell().Element(CellStyle).Text("Tank Cleaning"); // Replace with actual property name
-                    table.Cell().Element(CellStyle).Text(singleVoyageData.ReportedDateTime.ToString()); // Replace with actual property name
-                    table.Cell().Element(CellStyle).Text(singleVoyageData.HoursOfTankCleaned.ToString()); // Replace with actual property name
-                    table.Cell().Element(CellStyle).Text(singleVoyageData.NumberOfTanksCleaned.ToString()); // Replace with actual property name
-                    table.Cell().Element(CellStyle).Text(singleVoyageData.ActualConsumptionFO.ToString()); // Replace with actual property name
-                    table.Cell().Element(CellStyle).Text(singleVoyageData.ActualConsumptionGO.ToString()); // Replace with actual property name
-                    table.Cell().Element(CellStyle).Text(singleVoyageData.WarrantedConsumptionFO.ToString()); // Replace with actual property name
-                    table.Cell().Element(CellStyle).Text(singleVoyageData.WarrantedConsumptionGO.ToString()); // Replace with actual property name
-                    table.Cell().Element(CellStyle).Text(singleVoyageData.FuelLossGainFO.ToString()); // Replace with actual property name
-                    table.Cell().Element(CellStyle).Text(singleVoyageData.FuelLossGainGO.ToString()); // Replace with actual property name
+                    table.Cell().Element(CellStyle).Text("Tank Cleaning");  
+                    table.Cell().Element(CellStyle).Text(singleVoyageData.ReportedDateTime.ToString());  
+                    table.Cell().Element(CellStyle).Text(singleVoyageData.HoursOfTankCleaned.ToString());  
+                    table.Cell().Element(CellStyle).Text(singleVoyageData.NumberOfTanksCleaned.ToString());  
+                    table.Cell().Element(CellStyle).Text(singleVoyageData.ActualConsumptionFO.ToString());  
+                    table.Cell().Element(CellStyle).Text(singleVoyageData.ActualConsumptionGO.ToString());  
+                    table.Cell().Element(CellStyle).Text(singleVoyageData.WarrantedConsumptionFO.ToString());  
+                    table.Cell().Element(CellStyle).Text(singleVoyageData.WarrantedConsumptionGO.ToString());  
+                    table.Cell().Element(CellStyle).Text(singleVoyageData.FuelLossGainFO.ToString());  
+                    table.Cell().Element(CellStyle).Text(singleVoyageData.FuelLossGainGO.ToString());  
 
                     IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.White).ShowOnce();
                 }
@@ -1092,6 +1015,8 @@ try
 
         });
     }
+
+
     Document.Create(document =>
     {
         
@@ -1127,6 +1052,7 @@ try
             });
             titlePage.Footer().Element(ComposeFooter);
         });
+        /*
         document.Page(warrantyPage =>
         {
             warrantyPage.Size(PageSizes.A3.Landscape());
@@ -1240,6 +1166,8 @@ try
             });
             portPerformancePage.Footer().Element(ComposeFooter);
         });
+
+        */
         document.Page(pumpingPage => {
 
             pumpingPage.Size(PageSizes.A3.Landscape());
@@ -1249,9 +1177,15 @@ try
                 //column.Item().Element(ComposeHeading);
                 column.Item().Text("Pumping Performance").FontSize(25)
                              .ExtraBlack();
-                column.Item().Element(ComposePumpingTable1);
-                column.Item().Element(ComposePumpingTable2);
-                column.Item().Element(ComposePumpingTable3);
+                var dataSeeder = new DataSeeder();
+                var VoyageData = dataSeeder.SeedPumpingPerformanceData().SingleVoyageData;
+                foreach (var singleVoyageData in VoyageData)
+                {
+                    column.Item().Element(container => ComposePumpingVoyageDetail(container, singleVoyageData));
+                    column.Item().Element(container => ComposePumpingSingleVoyageData(container, singleVoyageData));
+                    column.Item().Element(container => ComposePumpingSingleVoyagePerformance(container, singleVoyageData));
+                }
+                
                 IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
             });
             pumpingPage.Footer().Element(ComposeFooter);
@@ -1306,7 +1240,7 @@ try
             tankCleaningPage.Footer().Element(ComposeFooter);
         });
     })
-    .GeneratePdf("Test2.pdf");
+    .GeneratePdf("VPDataSeederPopulated.pdf");
 }
 catch (Exception ex)
 {
